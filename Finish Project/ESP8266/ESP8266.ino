@@ -51,7 +51,7 @@ void loop()
   
   if (stringComplete ) 
   {   
-    url=inputString+".php";    
+    url=inputString;  
     if((WiFiMulti.run() == WL_CONNECTED)) 
     {
         HTTPClient http;

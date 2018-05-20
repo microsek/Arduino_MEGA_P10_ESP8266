@@ -97,7 +97,7 @@ void read_message(int cmd)
   String message="";
   String Lenght_Str_IN;
   String start_string="";
-  Serial2.print("http://192.168.1.6/msg"+String(cmd));
+  Serial2.print("http://192.168.1.6/msg"+String(cmd)+".php");
   Serial2.write(0x0a);
   while (Serial2.available()) 
   {
