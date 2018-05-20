@@ -1,18 +1,3 @@
-/*================================================
-Pin Arduino MEGA  =         P10
-D6                ->          A
-D7                ->          B
-D8                ->          SCK
-D11               ->          OE
-D51               ->          R
-D52               ->          CLK
-GND               ->          GND
-==================================================
-RX1               ->          TX BlueTooth (HC 05)
-=================================================
-RX2               ->          TX WIFI(ESP8266)
-TX2               ->           RX WIFI(ESP8266)
-=================================================*/
 #include <DMD3.h>
 #include <Arial_Black_16_ISO_8859_1.h>
 #include <Mono5x7.h>
@@ -57,6 +42,7 @@ void loop()
     attachInterrupt(0,serialEvent1, CHANGE); // open interrupt 0
     for(int i=1;i<4;i++)                     // loop read message from database
     {
+      //Serial.println("loop i="+String(i));
       read_message(i);                       // calll function read database
       if(NO_WIFI)                            // if wifi off show old data
       {
@@ -112,8 +98,7 @@ void read_message(int cmd)
   String message="";
   String Lenght_Str_IN;
   String start_string="";
-  Serial2.print("http://192.168.1.6/msg"+String(cmd)+".php");
-  Serial2.write(0x0a);
+  Serial2.println(String(cmd));
   while (Serial2.available()) 
   {
     char inChar = (char)Serial2.read();
@@ -121,6 +106,7 @@ void read_message(int cmd)
     {
         Lenght_Str_IN=message_in.substring(message_in.indexOf(';')+1, message_in.indexOf('!')); /* Lenght of string in */
         message=message_in.substring(1, Lenght_Str_IN.toInt());                                 /* cut message from 1 to lenght */
+        //Serial.println("[String in="+message_in+"] [Lenght="+Lenght_Str_IN+"] [ Message cut="+message);
         speed_display=message.substring(message.indexOf('[')+1, message.indexOf(']'));          /* cut speed */
         switch(speed_display.toInt()) 
         {
@@ -137,6 +123,7 @@ void read_message(int cmd)
         if(start_string=="<")
         {
           msg[cmd]=message.substring(message.indexOf('<')+1, message.indexOf("["));               /* cut string to display */
+          //Serial.println(msg[cmd]);
           drawMarquee(msg[cmd]);
           old_msg[cmd]=msg[cmd];
           message="";
